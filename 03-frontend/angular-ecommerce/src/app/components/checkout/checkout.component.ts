@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { ShopFormService } from 'src/app/services/shop-form.service';
@@ -31,10 +36,18 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
-        lastName:  new FormControl('', [Validators.required, Validators.minLength(2)]),
-        email: new FormControl('',
-                              [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
+        firstName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2)
+        ]),
+        lastName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2)
+        ]),
+        email: new FormControl('', [
+          Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
+        ])
       }),
       shippingAddress: this.formBuilder.group({
         street: [''],
@@ -83,9 +96,15 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  get firstName() { return this.checkoutFormGroup.get('customer.firstName'); }
-  get lastName() { return this.checkoutFormGroup.get('customer.lastName'); }
-  get email() { return this.checkoutFormGroup.get('customer.email'); }
+  get firstName() {
+    return this.checkoutFormGroup.get('customer.firstName');
+  }
+  get lastName() {
+    return this.checkoutFormGroup.get('customer.lastName');
+  }
+  get email() {
+    return this.checkoutFormGroup.get('customer.email');
+  }
 
   copyShippingAddressToBillingAddress(event) {
     if (event.target.checked) {
@@ -103,6 +122,12 @@ export class CheckoutComponent implements OnInit {
 
   onSubmit() {
     console.log('Handling the submit button');
+
+    // Touching all fields triggers the display of the error messages
+    if (this.checkoutFormGroup.invalid) {
+      this.checkoutFormGroup.markAllAsTouched();
+    }
+
     console.log(this.checkoutFormGroup.get('customer').value);
     console.log(
       'The email address is ' +
