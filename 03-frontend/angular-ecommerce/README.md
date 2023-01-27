@@ -30,4 +30,19 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # Okta 
 npm i @okta/okta-signin-widget@6.2.0
 npm i @okta/okta-angular@5.2.0
-npm i @okta/okta-auth.js@6.4.0
+npm i @okta/okta-auth-js@6.4.0
+
+# no warning 
+angular.json
+...
+"options": {
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "@babel/runtime-corejs3",
+              "@okta/okta-signin-widget",
+              "detect-node",
+              "tiny-emitter",
+              "p-cancelable",
+              "cross-fetch"
+            ],
+            ...
