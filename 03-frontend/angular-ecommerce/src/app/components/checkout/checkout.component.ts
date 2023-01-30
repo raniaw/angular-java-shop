@@ -35,6 +35,8 @@ export class CheckoutComponent implements OnInit {
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
 
+  storage: Storage = sessionStorage;
+
   constructor(
     private formBuilder: FormBuilder,
     private shopFormService: ShopFormService,
@@ -46,59 +48,62 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.reviewCartDetails();
 
+    // read the user's email address from browser storage
+    const theEmail = JSON.parse(this.storage.getItem('userEmail')!);
+
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
         lastName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
-        email: new FormControl('', [
+        email: new FormControl(theEmail, [
           Validators.required,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
         ]),
       }),
       shippingAddress: this.formBuilder.group({
         street: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
         city: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
         state: new FormControl('', [Validators.required]),
         country: new FormControl('', [Validators.required]),
         zipCode: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
       }),
       billingAddress: this.formBuilder.group({
         street: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
         city: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
         state: new FormControl('', [Validators.required]),
         country: new FormControl('', [Validators.required]),
         zipCode: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
       }),
       creditCard: this.formBuilder.group({
@@ -106,19 +111,19 @@ export class CheckoutComponent implements OnInit {
         nameOnCard: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ShopValidators.notOnlyWhitespace
+          ShopValidators.notOnlyWhitespace,
         ]),
         cardNumber: new FormControl('', [
           Validators.required,
-          Validators.pattern('[0-9]{16}')
+          Validators.pattern('[0-9]{16}'),
         ]),
         securityCode: new FormControl('', [
           Validators.required,
-          Validators.pattern('[0-9]{3}')
+          Validators.pattern('[0-9]{3}'),
         ]),
         expirationMonth: [''],
-        expirationYear: ['']
-      })
+        expirationYear: [''],
+      }),
     });
 
     // populate credit card months
