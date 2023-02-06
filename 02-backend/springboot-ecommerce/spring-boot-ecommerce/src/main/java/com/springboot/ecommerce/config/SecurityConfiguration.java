@@ -29,6 +29,10 @@ public class SecurityConfiguration {
 
         // Send a 401 message to the browser (w/o this, you'll see a blank page)
         Okta.configureResourceServer401ResponseBody(http);
+        
+        // disable CSRF since we are not using Cookies for session tracking
+        http.csrf().disable();
+        
         return http.build();
     }
 }
